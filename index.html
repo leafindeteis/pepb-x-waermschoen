@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src https://*.supabase.co wss://*.supabase.co; base-uri 'none'; form-action 'none'">
+  <title>PEPB x WärmSchöN</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232d4bd8' d='M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>PEPB x WärmSchöN</h1>
+  <div class="stats" id="stats">Loading entries …</div>
+  <button class="linkbtn" id="whoami" type="button" hidden></button>
+  <div class="hdr-right">
+    <input id="search" list="addrs" placeholder="Search address, e.g. Goltzstraße 3" autocomplete="off" aria-label="Search address">
+    <datalist id="addrs"></datalist>
+    <button class="toggle" id="openOnly" aria-pressed="false">Unvisited houses only</button>
+  </div>
+</header>
+<div id="namegate" hidden>
+  <form id="nameForm">
+    <h2 id="gateTitle">Join the map</h2>
+    <p class="hint" id="gateHint"></p>
+    <label id="codeField">Class code
+      <input id="classCode" type="text" maxlength="100" autocomplete="off" autocapitalize="none" spellcheck="false">
+    </label>
+    <label>First name
+      <input id="firstName" type="text" maxlength="30" autocomplete="given-name">
+    </label>
+    <p id="gateError" role="alert" hidden></p>
+    <button class="primary" id="nameSave" type="submit" disabled>Start</button>
+    <button class="secondary" id="nameCancel" type="button" hidden>Cancel</button>
+  </form>
+</div>
+<div id="banner" hidden></div>
+<div id="mapwrap">
+  <div id="map" role="application" aria-label="Map of houses"></div>
+  <div class="legend" aria-label="Legend">
+    <span><i class="sw" style="background:var(--house)"></i>Not rung yet</span>
+    <span><i class="sw" style="background:var(--st-none)"></i>Nobody home</span>
+    <span><i class="sw" style="background:var(--st-open)"></i>Opened, no conversation</span>
+    <span><i class="sw" style="background:var(--st-talk)"></i>Had a conversation</span>
+    <span><i class="sw" style="background:var(--st-noaccess)"></i>Couldn't get into the building</span>
+    <small>Stronger colour = more doors done</small>
+  </div>
+  <div id="toast" hidden role="status"></div>
+  <section id="sheet" hidden aria-live="polite"></section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
