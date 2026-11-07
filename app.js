@@ -69,7 +69,6 @@ function visitsFor(bid) { return visits.filter(v => v.b === bid).sort((a, c) => 
 const doorCount = (bid, f) => Math.max(1, doorCounts[bid + "_" + f] || 1);
 const doorKey = (f, d) => f + "_" + (d || 0);
 const placeName = (bid, f, d) => floorName(f) + (doorCount(bid, f) > 1 ? ", door " + ((d || 0) + 1) : "");
-function totalDoors(b) { let t = 0; for (let f = 0; f < levels(b); f++) t += doorCount(b.id, f); return t; }
 function doorStatus(bid) {
   const out = {};
   visitsFor(bid).forEach(v => { if (v.f == null) return; const k = doorKey(v.f, v.d), cur = out[k]; if (!cur || RESULTS[v.r].rank > RESULTS[cur.r].rank) out[k] = v; });
@@ -78,22 +77,20 @@ function doorStatus(bid) {
 function houseStatus(b) {
   const vs = visitsFor(b.id);
   if (!vs.length) return null;
-  const fs = doorStatus(b.id);
-  const done = Object.keys(fs).length;
-  let best = null;
-  Object.values(fs).forEach(v => { if (!best || RESULTS[v.r].rank > RESULTS[best].rank) best = v.r; });
-  if (!best) best = vs.some(v => v.r === "noaccess") ? "noaccess" : null;
-  const share = best === "noaccess" ? 1 : Math.min(1, done / totalDoors(b));
-  return { best, share, done };
+  // Conversations are counted per door, so a saved-twice entry doesn't turn a house dark green.
+  const doors = Object.values(doorStatus(b.id));
+  const talks = doors.filter(v => v.r === "talk").length;
+  const tok = talks >= 2 ? "--house-talk2" : talks === 1 ? "--house-talk1" : doors.some(v => v.r === "open") ? "--st-open" : "--st-none";
+  return { tok, talks };
 }
 function styleHouses() {
   const base = css("--house"), edge = css("--house-edge");
   let visited = 0, talks = 0;
   DATA.b.forEach(b => {
     const st = houseStatus(b), s = shapes.get(b.id);
-    if (st && st.best) visited++;
-    if (st && st.best) {
-      s.setStyle({ fillColor: css(RESULTS[st.best].tok), fillOpacity: openOnly ? 0.18 : 0.45 + 0.55 * st.share, color: edge, opacity: openOnly ? 0.3 : 1, weight: b.id === selected ? 2.5 : 0.6 });
+    if (st) visited++;
+    if (st) {
+      s.setStyle({ fillColor: css(st.tok), fillOpacity: openOnly ? 0.18 : 1, color: edge, opacity: openOnly ? 0.3 : 1, weight: b.id === selected ? 2.5 : 0.6 });
     } else {
       s.setStyle({ fillColor: base, fillOpacity: 1, color: edge, opacity: 1, weight: b.id === selected ? 2.5 : 0.6 });
     }

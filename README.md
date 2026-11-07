@@ -46,6 +46,10 @@ truncate public.visits, public.door_counts, public.floor_extras, public.members,
 delete from auth.users where is_anonymous;
 ```
 
+## Get the statistics
+
+Paste `stats.sql` into the SQL Editor and click **Run**. It shows how many doors were rung and opened, how many conversations took place, and how many houses were visited, without any names.
+
 ## Files
 
 | File | What it does |
@@ -55,6 +59,7 @@ delete from auth.users where is_anonymous;
 | `data.js` | Houses, streets and parks in the campaign area |
 | `config.js` | Public connection details for Supabase |
 | `setup.sql` | Tables, access rules and database functions |
+| `stats.sql` | Totals for the end of the project |
 | `.github/workflows/keep-alive.yml` | Stops the free Supabase project from pausing |
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, available under the Open Database License.
