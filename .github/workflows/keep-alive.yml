@@ -1,0 +1,20 @@
+name: Keep Supabase awake
+
+# Calls the database every 3 days so Supabase doesn't pause the free project.
+# It only runs a harmless function and can't see any door data.
+on:
+  schedule:
+    - cron: "41 6 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call the ping function
+        run: |
+          curl --fail --silent --show-error -X POST \
+            "https://welmuzolspteeowqpgrf.supabase.co/rest/v1/rpc/ping" \
+            -H "apikey: sb_publishable_1hDdTRYWnEFi3UOvj9sdMQ_46gjshia" \
+            -H "Content-Type: application/json" \
+            -d "{}"
