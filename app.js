@@ -9,7 +9,9 @@ const RESULTS = {
 };
 const REASONS = { unclear: "Unclear", language: "Language", time: "Time", interest: "Lack of interest", confidence: "Lack of self-confidence", age: "Age", other: "Other" };
 const DEFAULT_LEVELS = 5;
-const floorName = f => f === 0 ? "Ground floor" : f + ((f % 100 > 10 && f % 100 < 14) ? "th" : ([, "st", "nd", "rd"][f % 10] || "th")) + " floor";
+// The attic is stored as floor 60, so it never clashes with a numbered floor.
+const ATTIC = 60;
+const floorName = f => f === ATTIC ? "Attic" : f === 0 ? "Ground floor" : f + ((f % 100 > 10 && f % 100 < 14) ? "th" : ([, "st", "nd", "rd"][f % 10] || "th")) + " floor";
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const $ = id => document.getElementById(id);
 const fmtTime = iso => { const d = new Date(iso); return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ", " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }); };
@@ -126,7 +128,8 @@ async function renderSheet() {
 
   sh.append(el("h3", null, "Tap a door to log a visit"));
   const list = el("div", "floors");
-  for (let f = n - 1; f >= 0; f--) {
+  const rows = [ATTIC, ...Array.from({ length: n }, (_, i) => n - 1 - i)];
+  for (const f of rows) {
     const doors = doorCount(b.id, f), group = el("div", "floor-group");
     for (let d = 0; d < doors; d++) {
       const v = fs[doorKey(f, d)], isOpen = selFloor === f && selDoor === d;
