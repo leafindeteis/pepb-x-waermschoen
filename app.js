@@ -7,6 +7,7 @@ const RESULTS = {
   talk:     { label: "Had a conversation", short: "conversation", tok: "--st-talk", rank: 3 },
   noaccess: { label: "No access", short: "no access", tok: "--st-noaccess", rank: 0 },
 };
+const REASONS = { unclear: "Unclear", language: "Language", time: "Time", interest: "Lack of interest", confidence: "Lack of self-confidence", age: "Age", other: "Other" };
 const DEFAULT_LEVELS = 5;
 const floorName = f => f === 0 ? "Ground floor" : f + ((f % 100 > 10 && f % 100 < 14) ? "th" : ([, "st", "nd", "rd"][f % 10] || "th")) + " floor";
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -200,9 +201,22 @@ function entryForm(b, f, d) {
     ch.append(inp, lab);
   });
   fsx.append(ch); fm.append(fsx);
+  const why = el("fieldset"); why.hidden = true;
+  why.append(el("legend", null, "Why was there no conversation?"));
+  const wc = el("div", "choices reasons");
+  Object.entries(REASONS).forEach(([k, label]) => {
+    const inp = el("input"); inp.type = "radio"; inp.name = "reason"; inp.value = k; inp.id = "reason-" + k;
+    const lab = el("label", null, label); lab.htmlFor = inp.id;
+    wc.append(inp, lab);
+  });
+  why.append(wc); fm.append(why);
   const go = el("button", "primary", "Save entry"); go.type = "submit"; go.disabled = true;
-  fm.addEventListener("change", () => { go.disabled = !canWrite || !fm.r.value; });
-  fm.addEventListener("submit", e => { e.preventDefault(); if (!fm.r.value) return; save({ b: b.id, f, d, r: fm.r.value }); });
+  fm.addEventListener("change", () => {
+    const needsReason = fm.r.value === "open";
+    why.hidden = !needsReason;
+    go.disabled = !canWrite || !fm.r.value || (needsReason && !fm.reason.value);
+  });
+  fm.addEventListener("submit", e => { e.preventDefault(); if (!fm.r.value || (fm.r.value === "open" && !fm.reason.value)) return; save({ b: b.id, f, d, r: fm.r.value, reason: fm.reason.value }); });
   fm.append(go);
   return fm;
 }
@@ -279,7 +293,9 @@ $("whoami").onclick = openGate;
 async function save(entry) {
   if (saving) return;
   saving = true;
-  const { error } = await sb.from("visits").insert({ building_id: entry.b, floor: entry.f, door: entry.d || 0, result: entry.r });
+  const { error } = entry.r === "open"
+    ? await sb.rpc("log_no_conversation", { p_building: entry.b, p_floor: entry.f, p_door: entry.d || 0, p_reason: entry.reason })
+    : await sb.from("visits").insert({ building_id: entry.b, floor: entry.f, door: entry.d || 0, result: entry.r });
   saving = false;
   if (error) { writeError(error); return; }
   toast(entry.r === "noaccess" ? "Saved: no access" : "Saved: " + placeName(entry.b, entry.f, entry.d) + ", " + RESULTS[entry.r].short);

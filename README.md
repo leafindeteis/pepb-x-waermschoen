@@ -42,13 +42,17 @@ delete from public.visits where id = 'the-entry-id';
 Delete all door data and memberships when the project ends:
 
 ```sql
-truncate public.visits, public.door_counts, public.floor_extras, public.members, public.join_attempts;
+truncate public.visit_reasons, public.visits, public.door_counts, public.floor_extras, public.members, public.join_attempts;
 delete from auth.users where is_anonymous;
 ```
 
 ## Get the statistics
 
 Paste `stats.sql` into the SQL Editor and click **Run**. It shows how many doors were rung and opened, how many conversations took place, and how many houses were visited, without any names.
+
+For the reasons why doors opened without a conversation, do the same with `stats-reasons.sql`. Students choose a reason when they log such a door, but only you can see the reasons, in the SQL Editor.
+
+When you have your statistics, you can remove the link between reasons and addresses by running `delete from public.visit_reasons;`.
 
 ## Files
 
@@ -59,7 +63,8 @@ Paste `stats.sql` into the SQL Editor and click **Run**. It shows how many doors
 | `data.js` | Houses, streets and parks in the campaign area |
 | `config.js` | Public connection details for Supabase |
 | `setup.sql` | Tables, access rules and database functions |
-| `stats.sql` | Totals for the end of the project |
+| `stats.sql`, `stats-reasons.sql` | Totals for the end of the project |
+| `update-reasons.sql` | Adds the reasons to a database set up before they existed |
 | `.github/workflows/keep-alive.yml` | Stops the free Supabase project from pausing |
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, available under the Open Database License.
