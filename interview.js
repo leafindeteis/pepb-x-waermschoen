@@ -60,6 +60,9 @@ const Q = [
   { k: "inform_by", t: "multi", o: ["city", "district", "initiative", "other"], other: "inform_by_other", for: "any" },
   { k: "coop_interest", t: "yesno", for: "owner" },
   { k: "coop_why", t: "text", for: "owner" },
+
+  { s: "other", for: "any" },
+  { k: "other_notes", t: "text", for: "any" },
 ];
 
 // ---------- texts ----------
@@ -87,6 +90,7 @@ const T = {
       retrofit: ["Energy-efficient retrofitting", "Needs, wishes, priorities (insulating roof or façade, windows, door)"],
       participation: ["Information and participation"],
       network: ["Local heating network", "Explain it briefly first. Needs and wishes about a possible local heating network."],
+      other: ["Other", "Anything else that came up in the interview. No names or details that identify the person."],
     },
     q: {
       age: "Age range", gender: "Gender", household_size: "Household size", german_first_language: "German as first language",
@@ -113,6 +117,7 @@ const T = {
       inform_format: "How, in which format, should people be informed?", inform_format_other: "Which other format?",
       inform_by: "Informed by whom?", inform_by_other: "By whom else?",
       coop_interest: "Interested in joining a possible cooperative?", coop_why: "Why (not)?",
+      other_notes: "Other",
     },
     hint: {
       knows_how_to_get_informed: "E.g. information by the city, citizen initiative, tenant advisory board",
@@ -153,6 +158,7 @@ const T = {
       retrofit: ["Energetische Sanierung", "Bedürfnisse, Wünsche, Prioritäten (Dämmen von Dach oder Fassade, Fenster, Tür)"],
       participation: ["Information und Beteiligung"],
       network: ["Nahwärmenetz", "Zuerst kurz erklären. Bedürfnisse und Wünsche bzgl. eines möglichen Nahwärmenetzes im Kiez."],
+      other: ["Sonstiges", "Was sonst noch im Interview angesprochen wurde. Keine Namen oder Angaben, die die Person erkennbar machen."],
     },
     q: {
       age: "Altersspanne", gender: "Geschlecht", household_size: "Haushaltsgröße", german_first_language: "Deutsch als Erstsprache",
@@ -179,6 +185,7 @@ const T = {
       inform_format: "Wie, in welchem Format am besten informieren?", inform_format_other: "Welches andere Format?",
       inform_by: "Durch wen informiert werden?", inform_by_other: "Durch wen sonst?",
       coop_interest: "Interesse, sich an einer möglichen Genossenschaft zu beteiligen?", coop_why: "Warum (nicht)?",
+      other_notes: "Sonstiges",
     },
     hint: {
       knows_how_to_get_informed: "Z. B. Informationen seitens Stadt, Initiative AG WW, Mieterbeirat",
