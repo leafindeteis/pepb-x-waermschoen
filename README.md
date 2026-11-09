@@ -42,7 +42,7 @@ delete from public.visits where id = 'the-entry-id';
 Delete all door data and memberships when the project ends:
 
 ```sql
-truncate public.visit_reasons, public.visits, public.door_counts, public.floor_extras, public.members, public.join_attempts;
+truncate public.interviews, public.visit_reasons, public.visits, public.door_counts, public.floor_extras, public.members, public.join_attempts;
 delete from auth.users where is_anonymous;
 ```
 
@@ -54,17 +54,31 @@ For the reasons why doors opened without a conversation, do the same with `stats
 
 When you have your statistics, you can remove the link between reasons and addresses by running `delete from public.visit_reasons;`.
 
+## Interviews
+
+Students fill in interviews on the **Interview form** page, linked from the map, in German or English. Choosing owner-occupied or rented shows the matching questions. Interviews store only the date: no address, floor, door, student or time, so they can't be linked to the map. Students can add interviews but not read them.
+
+Run these in the SQL Editor:
+
+- `stats-interviews.sql`: counts for every choice and yes/no question, split by owners and tenants
+- `stats-interview-numbers.sql`: averages for household size, years lived, years planned and heating age
+- `export-interview-texts.sql`: all written answers, which you can download as CSV
+
+To delete one interview, find its `id` in the `interviews` table and run `delete from public.interviews where id = 'the-id';`.
+
 ## Files
 
 | File | What it does |
 |---|---|
-| `index.html`, `style.css` | The page and its look |
+| `index.html`, `style.css` | The map page and the look of both pages |
+| `interview.html`, `interview.js` | The interview form, in German and English |
 | `app.js` | Map, door list, joining, saving and live updates |
 | `data.js` | Houses, streets and parks in the campaign area |
 | `config.js` | Public connection details for Supabase |
 | `setup.sql` | Tables, access rules and database functions |
 | `stats.sql`, `stats-reasons.sql` | Totals for the end of the project |
-| `update-reasons.sql` | Adds the reasons to a database set up before they existed |
+| `update-reasons.sql`, `update-interviews.sql` | Add later features to a database set up before they existed |
+| `stats-interviews.sql`, `stats-interview-numbers.sql`, `export-interview-texts.sql` | Interview results |
 | `.github/workflows/keep-alive.yml` | Stops the free Supabase project from pausing |
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, available under the Open Database License.

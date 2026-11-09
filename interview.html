@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src https://*.supabase.co wss://*.supabase.co; base-uri 'none'; form-action 'none'">
+  <title>Interviewbogen · PEPB x WärmSchöN</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232d4bd8' d='M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="iv-page">
+<header>
+  <h1>PEPB x WärmSchöN</h1>
+  <a class="linkbtn" href="./" data-t="map">← Karte</a>
+  <div class="hdr-right lang" role="group" aria-label="Sprache / Language">
+    <button class="toggle" type="button" data-lang="de" aria-pressed="true">DE</button>
+    <button class="toggle" type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+<main class="iv-main">
+  <h2 class="iv-title" data-t="title">Interviewbogen</h2>
+  <p id="msg" class="iv-msg" role="status" hidden></p>
+
+  <div id="gate" class="iv-card" hidden>
+    <p id="gateText" data-t="needJoin"></p>
+    <a class="primary iv-link" href="./" data-t="toMap"></a>
+  </div>
+
+  <form id="ivForm" hidden>
+    <div class="iv-card">
+      <p data-t="intro"></p>
+      <p class="hint" data-t="privacy"></p>
+      <label class="iv-check"><input type="checkbox" id="consent"> <span data-t="consent"></span></label>
+      <p class="hint" data-t="optional"></p>
+    </div>
+    <div id="questions"></div>
+    <button class="primary iv-save" id="save" type="submit" data-t="save"></button>
+  </form>
+</main>
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="interview.js"></script>
+</body>
+</html>
