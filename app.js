@@ -64,7 +64,16 @@ DATA.b.forEach(b => {
 });
 const toggleLabels = () => { if (map.getZoom() >= 17) labelLayer.addTo(map); else labelLayer.remove(); };
 map.on("zoomend", toggleLabels);
-drawBase(); drawLabels(); toggleLabels();
+// Blocks suitable for an energy concept: a dashed green border above the houses that never catches taps.
+map.createPane("blocks");
+map.getPane("blocks").style.zIndex = 450;
+map.getPane("blocks").style.pointerEvents = "none";
+const blockRenderer = L.svg({ pane: "blocks" }), blockLayer = L.layerGroup().addTo(map);
+function drawBlocks() {
+  blockLayer.clearLayers();
+  (typeof BLOCKS === "undefined" ? [] : BLOCKS).forEach(b => L.polygon(b.p, { renderer: blockRenderer, pane: "blocks", color: css("--block-line"), weight: 3.5, dashArray: "8 5", fill: false, interactive: false }).addTo(blockLayer));
+}
+drawBase(); drawBlocks(); drawLabels(); toggleLabels();
 
 // ---------- derived ----------
 function levels(b) { return (b.l && b.l > 0 ? b.l : DEFAULT_LEVELS) + (extraFloors[b.id] || 0); }
@@ -383,7 +392,7 @@ $("openOnly").onclick = e => { openOnly = !openOnly; e.currentTarget.setAttribut
 
 // theme changes: recolor
 const mq = matchMedia("(prefers-color-scheme: dark)");
-const recolor = () => { drawBase(); shapes.forEach(s => s.bringToFront()); styleHouses(); renderSheet(); };
+const recolor = () => { drawBase(); drawBlocks(); shapes.forEach(s => s.bringToFront()); styleHouses(); renderSheet(); };
 mq.addEventListener && mq.addEventListener("change", recolor);
 new MutationObserver(recolor).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 styleHouses();

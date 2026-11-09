@@ -8,7 +8,7 @@ body { margin: 0; }
   --block: #e6e0d3; --street: #ffffff; --park: #cfe0c3; --house: #c9c2b4; --house-edge: #a69e8e;
   --accent: #2d4bd8; --accent-ink: #ffffff;
   --st-none: #cf3a3a; --st-open: #c8690a; --st-talk: #1e7d45; --st-noaccess: #6f717a;
-  --house-talk1: #8fd694; --house-talk2: #1e7d45;
+  --house-talk1: #8fd694; --house-talk2: #1e7d45; --block-line: #12a150;
   --display: "Avenir Next", system-ui, -apple-system, sans-serif;
   --body: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -17,14 +17,14 @@ body { margin: 0; }
   --block: #1b1f27; --street: #2b303b; --park: #23382a; --house: #3a3f4b; --house-edge: #545a68;
   --accent: #7d95ff; --accent-ink: #0f1424;
   --st-none: #d9534f; --st-open: #d67f1f; --st-talk: #2f9e5b; --st-noaccess: #757986;
-  --house-talk1: #7bd88f; --house-talk2: #1f8a4c;
+  --house-talk1: #7bd88f; --house-talk2: #1f8a4c; --block-line: #4ade80;
   color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #15181f; --surface: #1f232c; --fg: #eceef3; --muted: #9aa1b0; --line: #343a47;
   --block: #1b1f27; --street: #2b303b; --park: #23382a; --house: #3a3f4b; --house-edge: #545a68;
   --accent: #7d95ff; --accent-ink: #0f1424;
   --st-none: #d9534f; --st-open: #d67f1f; --st-talk: #2f9e5b; --st-noaccess: #757986;
-  --house-talk1: #7bd88f; --house-talk2: #1f8a4c;
+  --house-talk1: #7bd88f; --house-talk2: #1f8a4c; --block-line: #4ade80;
   color-scheme: dark }
 html, body { height: 100%; }
 body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; display: flex; flex-direction: column; overflow: hidden; }
@@ -56,6 +56,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 1.15rem; margin: 
 .legend span { display: flex; align-items: center; gap: 6px; }
 .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; }
 .legend small { color: var(--muted); }
+.sw-line { background: none; border: 2.5px dashed var(--block-line); }
 
 #sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1000; background: var(--surface); border-top: 1px solid var(--line); border-radius: 16px 16px 0 0; box-shadow: 0 -8px 24px rgb(0 0 0 / 0.14); max-height: 72%; overflow-y: auto; padding-block: 14px calc(16px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 @media (min-width: 820px) { #sheet { left: auto; right: 12px; top: 12px; bottom: 12px; width: 380px; max-height: none; border-radius: 14px; border: 1px solid var(--line); } }
