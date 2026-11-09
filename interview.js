@@ -69,7 +69,6 @@ const Q = [
 const T = {
   en: {
     title: "Interview form", map: "← Map",
-    intro: "Introduce yourself: TU project on heating and how people can be involved. The interview is anonymous.",
     consent: "The person agreed to the interview",
     privacy: "Don't enter names, the address, the floor or anything else that identifies the person. Street and floor from the paper guide are left out on purpose.",
     optional: "Every question is optional. Tap a selected answer again to clear it.",
@@ -137,7 +136,6 @@ const T = {
   },
   de: {
     title: "Interviewbogen", map: "← Karte",
-    intro: "Vorstellung: TU-Projekt zu Wärme und wie Menschen eingebunden werden können. Das Interview ist anonym.",
     consent: "Die Person ist mit dem Interview einverstanden",
     privacy: "Keine Namen, Adresse, Stockwerk oder andere Angaben eintragen, die die Person erkennbar machen. Straße und Stockwerk aus dem Leitfaden fehlen hier bewusst.",
     optional: "Alle Fragen sind freiwillig. Eine gewählte Antwort nochmal antippen, um sie zu löschen.",
