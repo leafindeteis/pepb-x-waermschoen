@@ -69,13 +69,14 @@ const Q = [
 const T = {
   en: {
     title: "Interview form", map: "← Map",
+    studentName: "First name (student)", interviewNumber: "Interview number",
     consent: "The person agreed to the interview",
     privacy: "Don't enter names, the address, the floor or anything else that identifies the person. Street and floor from the paper guide are left out on purpose.",
     optional: "Every question is optional. Tap a selected answer again to clear it.",
     tenureFirst: "Choose owner-occupied or rented to see the remaining questions.",
     save: "Save interview", saving: "Saving …",
     saved: "Interview saved. Thank you!",
-    missing: "Please tick consent and choose owner-occupied or rented first.",
+    missing: "Please fill in your first name and the interview number, tick consent and choose owner-occupied or rented.",
     error: "Saving didn't work. The answers are still here, please try again.",
     needJoin: "To fill in interviews, first join on the map with the class code.", toMap: "Go to the map",
     offline: "Not connected to a database.",
@@ -136,13 +137,14 @@ const T = {
   },
   de: {
     title: "Interviewbogen", map: "← Karte",
+    studentName: "Vorname (Student:in)", interviewNumber: "Interviewnummer",
     consent: "Die Person ist mit dem Interview einverstanden",
     privacy: "Keine Namen, Adresse, Stockwerk oder andere Angaben eintragen, die die Person erkennbar machen. Straße und Stockwerk aus dem Leitfaden fehlen hier bewusst.",
     optional: "Alle Fragen sind freiwillig. Eine gewählte Antwort nochmal antippen, um sie zu löschen.",
     tenureFirst: "Eigentums- oder Mietwohnung wählen, um die weiteren Fragen zu sehen.",
     save: "Interview speichern", saving: "Wird gespeichert …",
     saved: "Interview gespeichert. Danke!",
-    missing: "Bitte zuerst das Einverständnis ankreuzen und Eigentums- oder Mietwohnung wählen.",
+    missing: "Bitte Vorname und Interviewnummer eintragen, das Einverständnis ankreuzen und Eigentums- oder Mietwohnung wählen.",
     error: "Speichern hat nicht geklappt. Die Antworten sind noch da, bitte nochmal versuchen.",
     needJoin: "Um Interviews einzutragen, zuerst auf der Karte mit dem Klassencode beitreten.", toMap: "Zur Karte",
     offline: "Keine Verbindung zur Datenbank.",
@@ -324,6 +326,8 @@ function collect() {
     else addText(q.k, q.t === "text" ? 2000 : 300);
     if (q.other && (Array.isArray(val) ? val.includes("other") : val === "other")) addText(q.other, 300);
   });
+  texts.student_name = $("ivName").value.trim().slice(0, 30);
+  texts.interview_number = $("ivNumber").value.trim().slice(0, 20);
   return { tenure: v.tenure, choices, numbers, texts };
 }
 
@@ -332,12 +336,15 @@ function message(text, ok) { const m = $("msg"); m.textContent = text || ""; m.h
 $("ivForm").addEventListener("submit", async e => {
   e.preventDefault();
   if (saving) return;
-  if (!consent || !v.tenure) { message(T[lang].missing); return; }
+  if (!consent || !v.tenure || !$("ivName").value.trim() || !$("ivNumber").value.trim()) { message(T[lang].missing); return; }
   saving = true; $("save").disabled = true; $("save").textContent = T[lang].saving; message("");
   const { error } = await sb.from("interviews").insert(collect());
   saving = false; $("save").disabled = false; $("save").textContent = T[lang].save;
   if (error) { message(T[lang].error); return; }
   v = {}; consent = false; dirty = false;
+  // The name stays for the next interview, and a plain number moves on by one.
+  const num = $("ivNumber").value.trim();
+  $("ivNumber").value = /^\d+$/.test(num) ? String(Number(num) + 1) : "";
   build();
   message(T[lang].saved, true);
   scrollTo({ top: 0 });
@@ -358,8 +365,9 @@ build();
     const { data: { session } } = await sb.auth.getSession();
     let member = false;
     if (session) {
-      const { data } = await sb.from("members").select("user_id").eq("user_id", session.user.id).maybeSingle();
+      const { data } = await sb.from("members").select("first_name").eq("user_id", session.user.id).maybeSingle();
       member = !!data;
+      if (data && !$("ivName").value) $("ivName").value = data.first_name;
     }
     if (member) $("ivForm").hidden = false;
     else $("gate").hidden = false;
