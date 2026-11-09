@@ -342,9 +342,8 @@ $("ivForm").addEventListener("submit", async e => {
   saving = false; $("save").disabled = false; $("save").textContent = T[lang].save;
   if (error) { message(T[lang].error); return; }
   v = {}; consent = false; dirty = false;
-  // The name stays for the next interview, and a plain number moves on by one.
-  const num = $("ivNumber").value.trim();
-  $("ivNumber").value = /^\d+$/.test(num) ? String(Number(num) + 1) : "";
+  // The name stays for the next interview; the number is entered fresh each time.
+  $("ivNumber").value = "";
   build();
   message(T[lang].saved, true);
   scrollTo({ top: 0 });
