@@ -63,6 +63,7 @@ Run these in the SQL Editor:
 - `stats-interviews.sql`: counts for every choice and yes/no question, split by owners and tenants
 - `stats-interview-numbers.sql`: averages for household size, years lived, years planned and heating age
 - `export-interview-texts.sql`: all written answers, which you can download as CSV
+- `export-interviews-table.sql`: one row per interview and one column per question, for Excel
 
 To delete one interview, find its `id` in the `interviews` table and run `delete from public.interviews where id = 'the-id';`.
 
@@ -78,7 +79,7 @@ To delete one interview, find its `id` in the `interviews` table and run `delete
 | `setup.sql` | Tables, access rules and database functions |
 | `stats.sql`, `stats-reasons.sql` | Totals for the end of the project |
 | `update-reasons.sql`, `update-interviews.sql` | Add later features to a database set up before they existed |
-| `stats-interviews.sql`, `stats-interview-numbers.sql`, `export-interview-texts.sql` | Interview results |
+| `stats-interviews.sql`, `stats-interview-numbers.sql`, `export-interview-texts.sql`, `export-interviews-table.sql` | Interview results |
 | `.github/workflows/keep-alive.yml` | Stops the free Supabase project from pausing |
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, available under the Open Database License.
