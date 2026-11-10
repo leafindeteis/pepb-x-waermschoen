@@ -56,23 +56,18 @@ When you have your statistics, you can remove the link between reasons and addre
 
 ## Interviews
 
-Students fill in interviews on the **Interview form** page, linked from the map, in German or English. Choosing owner-occupied or rented shows the matching questions. Interviews store only the date: no address, floor, door, student or time, so they can't be linked to the map. Students can add interviews but not read them.
+The interview form was removed from the website on 10 November 2026; interviews will move to LimeSurvey. Interviews saved before then are still in the `interviews` table in Supabase. You can read them with these queries in the SQL Editor:
 
-Run these in the SQL Editor:
-
-- `stats-interviews.sql`: counts for every choice and yes/no question, split by owners and tenants
-- `stats-interview-numbers.sql`: averages for household size, years lived, years planned and heating age
-- `export-interview-texts.sql`: all written answers, which you can download as CSV
 - `export-interviews-table.sql`: one row per interview and one column per question, for Excel
+- `stats-interviews.sql`, `stats-interview-numbers.sql`, `export-interview-texts.sql`: counts, averages and written answers
 
-To delete one interview, find its `id` in the `interviews` table and run `delete from public.interviews where id = 'the-id';`.
+To delete all of them: `truncate public.interviews;`
 
 ## Files
 
 | File | What it does |
 |---|---|
-| `index.html`, `style.css` | The map page and the look of both pages |
-| `interview.html`, `interview.js` | The interview form, in German and English |
+| `index.html`, `style.css` | The map page and its look |
 | `app.js` | Map, door list, joining, saving and live updates |
 | `data.js` | Houses, streets and parks in the campaign area |
 | `config.js` | Public connection details for Supabase |
